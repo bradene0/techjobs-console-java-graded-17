@@ -84,20 +84,33 @@ public class JobData {
     }
 
     /**
-     * Search all columns for the given term
+     * Search all columns for the given term in a case-insensitive manner.
      *
      * @param value The search term to look for
-     * @return      List of all jobs with at least one field containing the value
+     * @return List of all jobs with at least one field containing the value (case-insensitive)
      */
     public static ArrayList<HashMap<String, String>> findByValue(String value) {
 
         // load data, if not already loaded
         loadData();
 
-        // TODO - implement this method
-        return null;
-    }
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
 
+        for (HashMap<String, String> row : allJobs) {
+            // Check each column's value for the search term (case-insensitive)
+            for (String column : row.keySet()) {
+                String columnValue = row.get(column);
+
+                // case-insensitive comparison
+                if (columnValue != null && columnValue.toLowerCase().contains(value.toLowerCase())) {
+                    jobs.add(row);
+                    break; // Add the job once and move to the next row
+                }
+            }
+        }
+
+        return jobs;
+    }
     /**
      * Read in data from a CSV file and store it in a list
      */

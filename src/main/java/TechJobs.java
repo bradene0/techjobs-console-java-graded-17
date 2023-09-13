@@ -10,6 +10,7 @@ public class TechJobs {
 
     static Scanner in = new Scanner(System.in);
 
+
     public static void main (String[] args) {
 
         // Initialize our field map with key/name pairs
@@ -62,7 +63,9 @@ public class TechJobs {
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    printJobs(JobData.findByValue(searchTerm));
+                    // Call the findByValue method to search all columns
+                    ArrayList<HashMap<String, String>> searchResults = JobData.findByValue(searchTerm);
+                    printJobs(searchResults);
                 } else {
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                 }
@@ -119,7 +122,22 @@ public class TechJobs {
 
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
+        if (someJobs.isEmpty()) {
+            System.out.println("No Results");
+            return;
+        }
 
-        System.out.println("printJobs is not implemented yet");
-    }
-}
+        for (HashMap<String, String> job : someJobs) {
+            System.out.println("*****");
+
+            for (Map.Entry<String, String> entry : job.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                System.out.println(key + ": " + value);
+            }
+
+            System.out.println("*****\n");
+            // System.out.println("printJobs is not implemented yet");
+        }
+
+    }}
