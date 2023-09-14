@@ -11,7 +11,7 @@ public class TechJobs {
     static Scanner in = new Scanner(System.in);
 
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
 
         // Initialize our field map with key/name pairs
         HashMap<String, String> columnChoices = new HashMap<>();
@@ -60,18 +60,21 @@ public class TechJobs {
 
                 // What is their search term?
                 System.out.println("\nSearch term:");
+                System.out.println(""); // Add an empty line
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    // Call the findByValue method to search all columns
-                    ArrayList<HashMap<String, String>> searchResults = JobData.findByValue(searchTerm);
+                    // Modify this part to make a case-insensitive search
+                    ArrayList<HashMap<String, String>> searchResults = JobData.findByValueCaseInsensitive(searchTerm);
                     printJobs(searchResults);
                 } else {
-                    printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
+                    // Modify this part to make a case-insensitive search
+                    printJobs(JobData.findByColumnAndValueCaseInsensitive(searchField, searchTerm));
                 }
             }
         }
     }
+
 
     // ﻿Returns the key of the selected item from the choices Dictionary
     private static String getUserSelection(String menuHeader, HashMap<String, String> choices) {
@@ -136,7 +139,7 @@ public class TechJobs {
                 System.out.println(key + ": " + value);
             }
 
-            System.out.println("*****\n");
+            System.out.println("*****");
             // System.out.println("printJobs is not implemented yet");
         }
 

@@ -84,33 +84,42 @@ public class JobData {
     }
 
     /**
-     * Search all columns for the given term in a case-insensitive manner.
+     * Search all columns for the given term
      *
      * @param value The search term to look for
-     * @return List of all jobs with at least one field containing the value (case-insensitive)
+     * @return List of all jobs with at least one field containing the value
      */
     public static ArrayList<HashMap<String, String>> findByValue(String value) {
 
         // load data, if not already loaded
         loadData();
 
-        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        // Create a list to store matching jobs
+        ArrayList<HashMap<String, String>> matchingJobs = new ArrayList<>();
 
-        for (HashMap<String, String> row : allJobs) {
-            // Check each column's value for the search term (case-insensitive)
-            for (String column : row.keySet()) {
-                String columnValue = row.get(column);
+        // Convert the search term to lowercase for case-insensitive comparison
+        String lowerCaseValue = value.toLowerCase();
 
-                // case-insensitive comparison
-                if (columnValue != null && columnValue.toLowerCase().contains(value.toLowerCase())) {
-                    jobs.add(row);
-                    break; // Add the job once and move to the next row
+        // Iterate through all jobs
+        for (HashMap<String, String> job : allJobs) {
+            // Iterate through all fields of the job
+            for (String field : job.values()) {
+                // Convert the field value to lowercase for case-insensitive comparison
+                String lowerCaseField = field.toLowerCase();
+
+                // Check if the field contains the lowercase search term
+                if (lowerCaseField.contains(lowerCaseValue)) {
+                    // If a match is found, add the job to the result list
+                    matchingJobs.add(job);
+                    break; // No need to check other fields for this job
                 }
             }
         }
 
-        return jobs;
+        return matchingJobs;
     }
+
+
     /**
      * Read in data from a CSV file and store it in a list
      */
@@ -151,5 +160,43 @@ public class JobData {
             e.printStackTrace();
         }
     }
+
+    // In your JobData class
+    public static ArrayList<HashMap<String, String>> findByValueCaseInsensitive(String value) {
+        loadData();
+        ArrayList<HashMap<String, String>> matchingJobs = new ArrayList<>();
+        String lowerCaseValue = value.toLowerCase();
+
+        for (HashMap<String, String> job : allJobs) {
+            for (String field : job.values()) {
+                String lowerCaseField = field.toLowerCase();
+                if (lowerCaseField.contains(lowerCaseValue)) {
+                    matchingJobs.add(job);
+                    break;
+                }
+            }
+        }
+
+        return matchingJobs;
+    }
+
+    public static ArrayList<HashMap<String, String>> findByColumnAndValueCaseInsensitive(String column, String value) {
+        loadData();
+        ArrayList<HashMap<String, String>> matchingJobs = new ArrayList<>();
+        String lowerCaseValue = value.toLowerCase();
+
+        for (HashMap<String, String> job : allJobs) {
+            String fieldValue = job.get(column);
+            if (fieldValue != null) {
+                String lowerCaseField = fieldValue.toLowerCase();
+                if (lowerCaseField.contains(lowerCaseValue)) {
+                    matchingJobs.add(job);
+                }
+            }
+        }
+
+        return matchingJobs;
+    }
+
 
 }
